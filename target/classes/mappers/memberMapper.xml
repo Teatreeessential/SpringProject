@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="org.zerock.mapper.MemberMapper">
+  	<insert id="create">
+  		insert into tbl_board(bno,title,content,writer)
+  		values(SEQ_tbl_board_bno.nextval,#{title},#{content},#{writer})
+  	</insert>
+  	
+  	<select id="read" resultType="org.zerock.domain.BoardVO">
+  		select * 
+  		from tbl_board
+  		where bno=#{bno}
+  	</select>
+  	
+  	<update id="viewcnt">
+  		update tbl_board set viewcnt= viewcnt+1 
+  		where bno=#{bno}
+  	</update>
+  	
+  	<update id="update">
+  		update tbl_board set title=#{title},content=#{content}
+  		where bno=#{bno}
+  	</update>
+  	
+  	<delete id="delete">
+  		delete from tbl_board
+  		where bno=#{bno}
+  	</delete>
+  	
+  	<select id="listAll" resultType="org.zerock.domain.BoardVO">
+  		<![CDATA[
+  		select *
+  		from tbl_board
+  		where bno > 0 
+  		order by bno desc, regdate desc
+  		]]>
+  	</select>
+  	
+  	<select id="listPage" resultType="BoardVO">
+  		<![CDATA[
+  		select b.bno,b.title,b.content,b.writer,b.regdate,b.viewcnt
+  		from 
+	  		(select rownum as rnum,a.bno,a.title,a.content,a.writer,a.regdate,a.viewcnt
+		  		from (
+		  			select *
+		  			from tbl_board
+		  			order by regdate desc
+		  		) a
+	  		where rownum <= #{end_page}) b
+  		where b.rnum >= #{start_page}
+  		]]>
+  	</select>
+  
+  	
+
+  </mapper>
