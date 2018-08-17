@@ -3,20 +3,19 @@ package org.zerock.domain;
 
 public class Criteria {
 	
-	private int per_page_value;
-	private int page_value;
-	private int page;
+	private int per_page_value=10;
+	private int page_value=10;
+	private int page = 1;
 	private int all_page_num;
 
-
 	
-	public Criteria(int all_page_num) {
+	
+	
+	public Criteria() {
 		super();
-		this.page = 1;
-		this.per_page_value=10;
-		this.page_value = 10;
-		this.all_page_num = all_page_num;
 	}
+
+
 
 	public int getPer_page_value() {
 		return per_page_value;
@@ -46,6 +45,14 @@ public class Criteria {
 		}
 		this.page = page;
 	}
+	
+	
+	public void setAll_page_num(int all_page_num) {
+		this.all_page_num = all_page_num;
+	}
+
+
+
 	public int getMaxPage() {
 		double max_page = this.all_page_num/(double)this.per_page_value;
 		return (int)Math.ceil(max_page);
@@ -74,6 +81,8 @@ public class Criteria {
 			return this.all_page_num;
 		}
 	}
+	
+	
 
 	@Override
 	public String toString() {

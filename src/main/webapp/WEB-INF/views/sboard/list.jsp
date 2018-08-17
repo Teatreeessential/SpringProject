@@ -20,10 +20,50 @@
 			alert(msg);	
 		}
 		
+		$("#searchBtn").on('click',function(){
+			console.log('하하')
+			self.location.href = 
+				'/sboard/list?page='+${current_page}+"&"+
+				'keyowrd='+$("#keywordInput").val()+"&"+
+				'searchType='+$(".search option:selected").val();
+		})		
+		
 	})
 </script>
 <body>
 <%@include file="../include/header.jsp" %>
+<div class='box-body'>
+	<select name="searchType" class="search">
+		<option value="n" <c:out value="${cri.searchType == null? 'selected':''}"/>>
+		------
+		</option>
+		<option value="t" <c:out value="${cri.searchType eq 't'? 'selected':''}"/>>
+		title
+		</option>
+		<option value="c" <c:out value="${cri.searchType eq 'c'? 'selected':''}"/>>
+		content
+		</option>
+		<option value="w" <c:out value="${cri.searchType eq 'w'? 'selected':''}"/>>
+		writer
+		</option>
+		<option value="tc" <c:out value="${cri.searchType eq 'tc'? 'selected':''}"/>>
+		title or content
+		</option>
+		<option value="cw" <c:out value="${cri.searchType eq 'cw'? 'selected':''}"/>>
+		content or writer
+		</option>
+		<option value="tcw" <c:out value="${cri.searchType eq 'tcw'? 'selected':''}"/>>
+		title or content or writer
+		</option>
+	</select>
+	
+	<input type="text" name="keyword" id="keywordInput" value="${cri.keyword}">
+	<button id="searchBtn">Search</button>
+
+</div>
+
+
+
 <table class="table">
   <thead>
     <tr>

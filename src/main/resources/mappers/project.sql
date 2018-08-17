@@ -41,12 +41,12 @@ select b.bno,b.title,b.content,b.writer,b.regdate,b.viewcnt
   		from 
 	  		(select rownum as rnum,a.bno,a.title,a.content,a.writer,a.regdate,a.viewcnt
 		  		from (
-		  			select *
+		  			select rownum,bno,title,content,writer,regdate,viewcnt
 		  			from tbl_board
-		  			order by regdate desc
+		  			order by bno desc
 		  		) a
-	  		where rownum <= 40) b
-  		where b.rnum >= 31
+	  		where rownum <= 100) b
+  		where b.rnum >= 91
 
 
 

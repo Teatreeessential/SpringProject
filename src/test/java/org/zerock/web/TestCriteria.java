@@ -19,8 +19,9 @@ public class TestCriteria {
 	
 	@Test
 	public void CriteriaOK(){
-		Criteria cri = new Criteria(101);
-		cri.setPage(5);
+		Criteria cri = new Criteria();
+		cri.setAll_page_num(200);
+		cri.setPage(11);
 		logger.info("테스트를 시작합니다.");
 		logger.info(String.valueOf(cri.getEnd_page()));
 		logger.info(cri.toString());

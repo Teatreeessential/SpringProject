@@ -31,7 +31,7 @@
 		})
 		//조회
 		$(".btn-primary").on('click',function(){
-			self.location = "/board/listAll";
+			self.location = "/board/listAll?page="+${current_page};
 		})
 		if(msg){
 			alert(msg);	
