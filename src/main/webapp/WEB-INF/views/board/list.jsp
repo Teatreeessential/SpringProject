@@ -23,10 +23,17 @@
 		$("#searchBtn").on('click',function(){
 			console.log('하하')
 			self.location.href = 
-				'/sboard/list?page='+${current_page}+"&"+
-				'keyowrd='+$("#keywordInput").val()+"&"+
+				'/board/list?page='+${current_page}+"&"+
+				'keyword='+$("#keywordInput").val()+"&"+
 				'searchType='+$(".search option:selected").val();
-		})		
+		})
+		
+		$('#listAll').on('click',function(){
+			self.location.href = 
+				'/board/list?page='+${current_page}+"&"+
+				'keyword='+""+"&"+
+				'searchType='+"";
+		})
 		
 	})
 </script>
@@ -57,9 +64,9 @@
 		</option>
 	</select>
 	
-	<input type="text" name="keyword" id="keywordInput" value="${cri.keyword}">
-	<button id="searchBtn">Search</button>
-
+	<input type="text" name="keyword" id="keywordInput" class="text-control" value="${cri.keyword}">
+	<button class='btn btn-success'  id="searchBtn">Search</button>
+	<button class='btn btn-success'  id="listAll">전체보기</button>
 </div>
 
 
@@ -77,7 +84,7 @@
   <c:forEach items="${board_list}" var="BoardVO">
     <tr>
       <td>${BoardVO.bno}</td>
-      <td><a href="/board/read?bno=${BoardVO.bno}&page=${current_page}">${BoardVO.title}</a></td>
+      <td><a href="/board/read?bno=${BoardVO.bno}&page=${current_page}&keyword=${cri.keyword}&searchType=${cri.searchType}">${BoardVO.title}</a></td>
       <td>${BoardVO.writer}</td>
       <td><fmt:formatDate pattern="yyyy-mm-dd HH:mm" value="${BoardVO.regdate}"/></td>
       <td>${BoardVO.viewcnt}</td>
@@ -92,7 +99,7 @@
 	 
 	 <c:choose>
 	 	<c:when test="${current_page!=1}">
-		  	<li class="page-item"><a class="page-link" href="/board/listAll?page=${current_page-1}">Previous</a></li>
+		  	<li class="page-item"><a class="page-link" href="/board/list?page=${current_page-1}&keyword=${cri.keyword}&searchType=${cri.searchType}">Previous</a></li>
 	    </c:when>
 	    <c:when test="${current_page==1}">
 		    <li class="page-item disabled">
@@ -110,7 +117,7 @@
 			</c:when>
 			
 			<c:otherwise>
-	    		<li class="page-item"><a class="page-link" href="/board/listAll?page=${i}">${i}</a></li>
+	    		<li class="page-item"><a class="page-link" href="/board/list?page=${i}&keyword=${cri.keyword}&searchType=${cri.searchType}">${i}</a></li>
 	    	</c:otherwise>
 		</c:choose>
 	</c:forEach>
@@ -119,7 +126,7 @@
 		
 		<c:when test="${current_page!=last_page}">
 		  	<li class="page-item">
-		  		<a class="page-link" href="/board/listAll?page=${current_page+1}">Next</a>
+		  		<a class="page-link" href="/board/list?page=${current_page+1}&keyword=${cri.keyword}&searchType=${cri.searchType}">Next</a>
 		  	</li>
 	    </c:when>
 	    

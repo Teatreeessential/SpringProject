@@ -4,6 +4,38 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="org.zerock.mapper.MemberMapper">
+  	
+  	<sql id="search">
+	  	<if test="searchType != null">
+	  		<if test="searchType=='t'.toString()">
+	  			and title like '%' || #{keyword} ||'%' 
+	  		</if>
+	  		<if test="searchType=='c'.toString()">
+	  			and content like '%' || #{keyword} ||'%' 
+	  		</if>
+	  		<if test="searchType=='w'.toString()">
+	  			and writer like '%' || #{keyword} ||'%' 
+	  		</if>
+	  		<if test="searchType=='tc'.toString()">
+	  			and (title like '%' || #{keyword} ||'%'
+	  				or
+	  				content like '%' || #{keyword} ||'%') 
+	  		</if>
+	  		<if test="searchType=='cw'.toString()">
+	  			and (title like '%' || #{keyword} ||'%'
+	  				or
+	  				writer like '%' || #{keyword} ||'%') 
+	  		</if>
+	  		<if test="searchType=='tcw'.toString()">
+	  			and (title like '%' || #{keyword} ||'%'
+	  				or
+	  				writer like '%' || #{keyword} ||'%'
+	  				or
+	  				content like '%' || #{keyword} ||'%') 
+	  		</if>
+	  	</if>
+  	</sql>
+  
   	<insert id="create">
   		insert into tbl_board(bno,title,content,writer)
   		values(SEQ_tbl_board_bno.nextval,#{title},#{content},#{writer})
@@ -39,6 +71,8 @@
   		]]>
   	</select>
   	
+  	
+  	
   	<select id="listPage" resultType="BoardVO">
   		<![CDATA[
   		select b.bno,b.title,b.content,b.writer,b.regdate,b.viewcnt
@@ -47,13 +81,39 @@
 		  		from (
 		  			select *
 		  			from tbl_board
-		  			order by regdate desc
+		  			order by bno desc
 		  		) a
 	  		where rownum <= #{end_page}) b
   		where b.rnum >= #{start_page}
   		]]>
   	</select>
-  
   	
+  	<select id="listSearch" resultType="BoardVO">
+  	<![CDATA[
+  		select b.bno,b.title,b.content,b.writer,b.regdate,b.viewcnt
+  		from 
+	  		(select rownum as rnum,a.bno,a.title,a.content,a.writer,a.regdate,a.viewcnt
+		  		from (
+				  		select *
+				  		from tbl_board
+				  		where bno>0
+  	]]>
+	<include refid="search"></include>
+  	<![CDATA[
+  		order by bno desc
+  		) a
+  			where rownum <= #{end_page}) b
+  		where b.rnum >= #{start_page}
+  	]]>
+  	</select>
+  	
+  	 <select id="listSearchCount" resultType="int">
+  		<![CDATA[
+	  		select count(bno) 
+	  		from tbl_board
+	  		where bno>0
+  		]]>
+  		<include refid="search"></include>
+  	</select>
 
   </mapper>

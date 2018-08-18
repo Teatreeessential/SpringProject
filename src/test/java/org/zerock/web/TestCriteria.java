@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.zerock.domain.Criteria;
+import org.zerock.domain.SearchCriteria;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
@@ -19,9 +20,12 @@ public class TestCriteria {
 	
 	@Test
 	public void CriteriaOK(){
-		Criteria cri = new Criteria();
-		cri.setAll_page_num(200);
-		cri.setPage(11);
+		SearchCriteria cri = new SearchCriteria();
+		cri.setAll_page_num(10);
+		logger.info(cri.getSearchType());
+		logger.info(cri.getKeyword());
+		
+	
 		logger.info("테스트를 시작합니다.");
 		logger.info(String.valueOf(cri.getEnd_page()));
 		logger.info(cri.toString());

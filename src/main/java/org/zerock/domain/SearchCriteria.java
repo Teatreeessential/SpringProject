@@ -28,8 +28,13 @@ public class SearchCriteria extends Criteria {
 
 	@Override
 	public String toString() {
-		return "SearchCriteria [searchType=" + searchType + ", keyword=" + keyword + "]";
+		return "SearchCriteria [searchType=" + searchType + ", keyword=" + keyword + ", getPer_page_value()="
+				+ getPer_page_value() + ", getPage()=" + getPage() + ", getMaxPage()=" + getMaxPage()
+				+ ", start_page()=" + start_page() + ", end_page()=" + end_page() + ", getStart_page()="
+				+ getStart_page() + ", getEnd_page()=" + getEnd_page() + ", toString()=" + super.toString()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + "]";
 	}
+
 	
 	
 	

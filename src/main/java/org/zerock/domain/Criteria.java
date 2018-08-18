@@ -63,7 +63,7 @@ public class Criteria {
 		return ((this.page-1)/this.page_value)*this.page_value+1;
 	}
 	public int end_page() {
-		if(((this.page-1)/this.page_value+1)*this.page_value==getMaxPage()) {
+		if(((this.page-1)/this.page_value+1)*this.page_value>getMaxPage()) {
 			return getMaxPage();
 		}else {
 			return ((this.page-1)/this.page_value+1)*this.page_value;

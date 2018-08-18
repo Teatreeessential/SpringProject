@@ -17,6 +17,7 @@
 	$(document).ready(function(){
 		const form = $("form[role='form']");
 		var msg = '${msg}';
+		
 		//수정
 		$(".btn-warning").on('click',function(){
 			form.attr("action","/board/modify");
@@ -31,12 +32,15 @@
 		})
 		//조회
 		$(".btn-primary").on('click',function(){
-			self.location = "/board/listAll?page="+${current_page};
+			form.attr("method","get");
+			form.attr("action","/board/list");
+			form.submit();
+			
 		})
 		if(msg){
 			alert(msg);	
 		}
-	
+		
 		
 	})
 </script>
@@ -44,6 +48,9 @@
 	<%@include file="../include/header.jsp" %>
 	<form role="form" method="post">
 		  <input type="hidden" name="bno" value="${one_board.bno}"/>
+		  <input type="hidden" name="keyword" value="${keyword}">
+		  <input type="hidden" name="searchType" value="${searchType}">
+		  <input type="hidden" name="page" value="${current_page }">
 		  <div class="form-group">
 		    <label for="exampleFormControlInput1">title</label>
 		    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="제목" name="title"

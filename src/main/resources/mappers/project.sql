@@ -43,11 +43,14 @@ select b.bno,b.title,b.content,b.writer,b.regdate,b.viewcnt
 		  		from (
 		  			select rownum,bno,title,content,writer,regdate,viewcnt
 		  			from tbl_board
+		  			where bno>0 and title like '%' || 'test' ||'%'
 		  			order by bno desc
 		  		) a
-	  		where rownum <= 100) b
-  		where b.rnum >= 91
+	  		where rownum <= 200) b
+  		where b.rnum >= 191
 
+
+delete from tbl_board;
 
 
 

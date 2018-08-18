@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.zerock.domain.BoardVO;
 import org.zerock.domain.Criteria;
+import org.zerock.domain.SearchCriteria;
 
 public interface BoardDAO {
 	public void create(BoardVO vo)throws Exception;
@@ -20,6 +21,10 @@ public interface BoardDAO {
 	public void viewcnt(Integer bno);
 	
 	public List<BoardVO> listPage(Criteria cri)throws Exception;
+	
+	public List<BoardVO> listSearch(SearchCriteria cri)throws Exception;
+	
+	public int listSearchCount(SearchCriteria cri)throws Exception;
 	
 	
 }
