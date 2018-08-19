@@ -84,6 +84,10 @@ public class BoaradController {
 		
 		return "redirect:/board/list";
 	}
+	@RequestMapping(value="/test",method=RequestMethod.GET)
+	public void test() {
+		System.out.println("댓글 테스트");
+	}
 
 	
 	

@@ -72,6 +72,7 @@
 		<button type="submit" class="btn btn-danger">Remove</button>
 		<button type="submit" class="btn btn-primary">LIST</button>
 	</div>
+	<hr>
 	
 		
 </body>

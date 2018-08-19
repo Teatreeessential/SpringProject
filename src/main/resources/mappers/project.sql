@@ -1,7 +1,14 @@
 
+/* Drop Triggers */
+
+DROP TRIGGER TRI_tbl_board_bno;
+DROP TRIGGER TRI_tbl_reply_rno;
+
+
 
 /* Drop Tables */
 
+DROP TABLE tbl_reply CASCADE CONSTRAINTS;
 DROP TABLE tbl_board CASCADE CONSTRAINTS;
 
 
@@ -9,11 +16,15 @@ DROP TABLE tbl_board CASCADE CONSTRAINTS;
 /* Drop Sequences */
 
 DROP SEQUENCE SEQ_tbl_board_bno;
+DROP SEQUENCE SEQ_tbl_reply_rno;
 
 
 
 
+/* Create Sequences */
 
+CREATE SEQUENCE SEQ_tbl_board_bno INCREMENT BY 1 START WITH 1;
+CREATE SEQUENCE SEQ_tbl_reply_rno INCREMENT BY 1 START WITH 1;
 
 
 
@@ -29,28 +40,53 @@ CREATE TABLE tbl_board
 	viewcnt number DEFAULT 0,
 	PRIMARY KEY (bno)
 );
-/* Create Sequences */
-
-CREATE SEQUENCE SEQ_tbl_board_bno INCREMENT BY 1 START WITH 1;
 
 
-
-select * from tbl_board
-
-select b.bno,b.title,b.content,b.writer,b.regdate,b.viewcnt
-  		from 
-	  		(select rownum as rnum,a.bno,a.title,a.content,a.writer,a.regdate,a.viewcnt
-		  		from (
-		  			select rownum,bno,title,content,writer,regdate,viewcnt
-		  			from tbl_board
-		  			where bno>0 and title like '%' || 'test' ||'%'
-		  			order by bno desc
-		  		) a
-	  		where rownum <= 200) b
-  		where b.rnum >= 191
+CREATE TABLE tbl_reply
+(
+	rno number NOT NULL,
+	replytext varchar2(1000) NOT NULL,
+	replyer varchar2(50) NOT NULL,
+	regdate date DEFAULT SYSDATE NOT NULL,
+	updatedate date DEFAULT SYSDATE NOT NULL,
+	bno number NOT NULL,
+	PRIMARY KEY (rno)
+);
 
 
-delete from tbl_board;
+
+/* Create Foreign Keys */
+
+ALTER TABLE tbl_reply
+	ADD FOREIGN KEY (bno)
+	REFERENCES tbl_board (bno)
+;
+
+
+
+/* Create Triggers */
+
+CREATE OR REPLACE TRIGGER TRI_tbl_board_bno BEFORE INSERT ON tbl_board
+FOR EACH ROW
+BEGIN
+	SELECT SEQ_tbl_board_bno.nextval
+	INTO :new.bno
+	FROM dual;
+END;
+
+/
+
+CREATE OR REPLACE TRIGGER TRI_tbl_reply_rno BEFORE INSERT ON tbl_reply
+FOR EACH ROW
+BEGIN
+	SELECT SEQ_tbl_reply_rno.nextval
+	INTO :new.rno
+	FROM dual;
+END;
+
+/
+
+select * from tbl_reply;
 
 
 
