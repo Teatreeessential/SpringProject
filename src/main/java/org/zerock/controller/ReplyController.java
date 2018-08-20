@@ -17,6 +17,8 @@ import org.zerock.domain.Criteria;
 import org.zerock.domain.ReplyVO;
 import org.zerock.service.ReplyService;
 
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
+
 @RestController
 @RequestMapping("/replies")
 public class ReplyController {
@@ -94,10 +96,15 @@ public class ReplyController {
 			cri.setPage(page);
 			cri.setAll_page_num(service.all_reply_count(bno));
 			//실제 게시글 객체를 담을 LIST
+			System.out.println(cri.toString());
+			System.out.println("에러 남?");
 			List<ReplyVO> list = service.page_reply_count(bno, cri);
-			
+			System.out.println("ㅇㅇ");
 			map.put("list", list);
-			map.put("cri", cri);
+			map.put("start_page", cri.start_page());
+			map.put("max_page", cri.getMaxPage());
+			map.put("end_page",cri.end_page());
+			map.put("current_page",cri.getPage());
 			
 			entity = new ResponseEntity<>(map,HttpStatus.OK);
 			

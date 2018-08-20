@@ -17,7 +17,7 @@
  	</insert>
  	
  	<update id="update">
- 		update tbl_reply set replytext=#{replytext},updatedate=now()
+ 		update tbl_reply set replytext=#{replytext},updatedate=sysdate
  		where rno= #{rno}
  	</update>
  	
@@ -35,14 +35,14 @@
 			 			from tbl_reply
 			 			where bno=#{bno}
 			 			order by rno desc) a
-			 	where rownum <= #{end_page}) b
-	  where b.rnum >= #{start_page}	 		
+			 	where rownum <= #{cri.end_page}) b
+	  where b.rnum >= #{cri.start_page}	 		
  	 ]]> 		
  	</select>
  	
  	<select id="all_reply_count" resultType="int">
  		select count(rno)
- 		from tbl_reply
- 		where bno=#{bno}
+		from tbl_reply
+		where bno=#{bno}
  	</select>
  </mapper>

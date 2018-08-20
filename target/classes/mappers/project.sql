@@ -88,6 +88,10 @@ END;
 
 select * from tbl_reply;
 
+select count(rno)
+from tbl_reply
+where bno=3;
+
 
 
 

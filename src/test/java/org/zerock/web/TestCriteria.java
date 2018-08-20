@@ -21,7 +21,7 @@ public class TestCriteria {
 	@Test
 	public void CriteriaOK(){
 		SearchCriteria cri = new SearchCriteria();
-		cri.setAll_page_num(10);
+		cri.setAll_page_num(11);
 		logger.info(cri.getSearchType());
 		logger.info(cri.getKeyword());
 		

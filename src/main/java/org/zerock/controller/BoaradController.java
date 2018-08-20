@@ -88,6 +88,11 @@ public class BoaradController {
 	public void test() {
 		System.out.println("댓글 테스트");
 	}
+	@RequestMapping(value="/NewFile",method=RequestMethod.GET)
+	public void handlebars() {
+		System.out.println("handlebars 테스트");
+		
+	}
 
 	
 	
