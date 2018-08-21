@@ -4,16 +4,97 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page session="false" %>
 <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css">    
-    
+
+
+<script src="<c:url value="/resources/handlebars-v4.0.11.js"/>"></script>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="<c:url value="/resources/js/jquery-3.3.1.js"/>"></script>
-<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
-<script src="<c:url value="/resources/handlebars-v4.0.11.js"/>"></script>
 <title>Insert title here</title>
 </head>
+
+
+<body>
+	<%@include file="../include/header.jsp" %>
+	<form role="form" method="post">
+		  <input type="hidden" name="bno" value="${one_board.bno}"/>
+		  <input type="hidden" name="keyword" value="${keyword}">
+		  <input type="hidden" name="searchType" value="${searchType}">
+		  <input type="hidden" name="page" value="${current_page }">
+		  <div class="form-group">
+		    <label for="exampleFormControlInput1">title</label>
+		    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="제목" name="title"
+		    value="${one_board.title}">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleFormControlSelect1">content</label>
+		    <textarea class="form-control" rows="3" placeholder="내용" name="content">${one_board.content}</textarea>
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleFormControlSelect2">writer</label>
+		    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="글쓴이" name="writer"
+		    value="${one_board.writer}" readonly="readonly">
+		  </div>
+	</form>
+	<hr>
+	<div class="box-footer">
+		<button type="submit" class="btn btn-warning">Modify</button>
+		<button type="submit" class="btn btn-danger">Remove</button>
+		<button type="submit" class="btn btn-primary">LIST</button>
+	</div>
+	<hr>
+	
+	<div  class="row">
+		<div class="col-md-12">
+			<div class="box-header">
+				<h3 class="box-title">ADD NEW REPLY</h3>
+			</div>
+			<div class="box-body">
+				<label for="newReplyWriter">Writer</label>
+				<input class="form-control" type="text" placeholder="user_id" id="newReplyWriter">
+				<label for="newReplyText">ReplyText</label>
+				<input class="form-control" type="text" placeholder="user_id" id="newReplyText">
+			</div>
+			<div class="box-footer">
+				<button type="submit" class="btn btn-primary" id="replyAddBtn">ADD REPLY</button>
+			</div>
+		</div>
+	</div>
+	
+	<hr>
+	<ul class="timeline">
+		<li class="time-label"  id="repliesDiv"><span class="bg-green">replies list</span></li>
+	</ul>
+	
+	<div class="text-center">
+		<ul id="pagenation" class="pagination pagination-sm no-margin">
+		</ul>
+	</div>
+	
+	<!-- MODAL -->
+<div id="modifyModal" class="modal modal-primary fade"  role="dialog" data-backdrop="false">
+  <div class="modal-dialog" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"></h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body" data-rno>
+        <p><input type="text" id="replytext" class="form-control"></p>
+      </div>
+      <div class="modal-footer">
+       	<button type="button" class="btn btn-info" id="reply_modify">modify</button>
+		<button type="button" class="btn btn-danger" id="reply_delete">delete</button>
+		<button type="button" class="btn btn-default" id="modal_close">close</button>
+      </div>
+    </div>
+  </div>
+</div>
+		
+</body>
+
+<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
 <script id="template" type="text/x-handlebars-template">
 
 <ul class="list-group">
@@ -29,6 +110,7 @@
 </ul>
 </script>
 <script type="text/javascript">
+
 	$(document).ready(function(){
 		var bno = ${one_board.bno};
 		var replyPage = 1;
@@ -67,6 +149,7 @@
 				printData(data.list,$("#repliesDiv"),$("#template"));
 				printpaging(data.start_page,data.end_page,data.max_page,data.page);
 				
+				$('#modifyModal').modal('hide');
 				
 			});
 			
@@ -129,8 +212,7 @@
 				success: function(result){
 					if(result == "SUCCESS"){
 						alert("삭제 되었습니다.")
-						$("#modDiv").hide("slow");
-						getAllList();
+						getpageList(replyPage);
 					}
 				}
 				
@@ -152,13 +234,20 @@
 				success:function(result){
 					if(result=='SUCCESS'){
 						alert("수정 되었습니다.");
-						$('#modDiv').hide("slow");
+						getpageList(replyPage);
 						
 					}
 				}
 			})
 			
 		})
+		
+		//모달을 닫습니다.
+		$("#modal_close").on('click',function(){
+			$("#modifyModal").modal('hide');
+		})
+		
+		//해당 메서드를 통해서 모달에 데이터를 넣는다.
 		$(".timeline").on("click",".replyLi",function(event){
 			var reply = $(this);
 			$("#replytext").val(reply.find('.timeline-body').text());
@@ -191,83 +280,4 @@
 		
 	})
 </script>
-<body>
-	<%@include file="../include/header.jsp" %>
-	<form role="form" method="post">
-		  <input type="hidden" name="bno" value="${one_board.bno}"/>
-		  <input type="hidden" name="keyword" value="${keyword}">
-		  <input type="hidden" name="searchType" value="${searchType}">
-		  <input type="hidden" name="page" value="${current_page }">
-		  <div class="form-group">
-		    <label for="exampleFormControlInput1">title</label>
-		    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="제목" name="title"
-		    value="${one_board.title}">
-		  </div>
-		  <div class="form-group">
-		    <label for="exampleFormControlSelect1">content</label>
-		    <textarea class="form-control" rows="3" placeholder="내용" name="content">${one_board.content}</textarea>
-		  </div>
-		  <div class="form-group">
-		    <label for="exampleFormControlSelect2">writer</label>
-		    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="글쓴이" name="writer"
-		    value="${one_board.writer}" readonly="readonly">
-		  </div>
-	</form>
-	<hr>
-	<div class="box-footer">
-		<button type="submit" class="btn btn-warning">Modify</button>
-		<button type="submit" class="btn btn-danger">Remove</button>
-		<button type="submit" class="btn btn-primary">LIST</button>
-	</div>
-	<hr>
-	
-	<div  class="row">
-		<div class="col-md-12">
-			<div class="box-header">
-				<h3 class="box-title">ADD NEW REPLY</h3>
-			</div>
-			<div class="box-body">
-				<label for="newReplyWriter">Writer</label>
-				<input class="form-control" type="text" placeholder="user_id" id="newReplyWriter">
-				<label for="newReplyText">ReplyText</label>
-				<input class="form-control" type="text" placeholder="user_id" id="newReplyText">
-			</div>
-			<div class="box-footer">
-				<button type="submit" class="btn btn-primary" id="replyAddBtn">ADD REPLY</button>
-			</div>
-		</div>
-	</div>
-	
-	<hr>
-	<ul class="timeline">
-		<li class="time-label"  id="repliesDiv"><span class="bg-green">replies list</span></li>
-	</ul>
-	
-	<div class="text-center">
-		<ul id="pagenation" class="pagination pagination-sm no-margin">
-		</ul>
-	</div>
-	
-	<!-- MODAL -->
-<div id="modifyModal" class="modal modal-primary fade"  role="dialog">
-  <div class="modal-dialog" >
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"></h5>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body" data-rno>
-        <p><input type="text" id="replytext" class="form-control"></p>
-      </div>
-      <div class="modal-footer">
-       	<button type="button" class="btn btn-info" id="reply_modify">modify</button>
-		<button type="button" class="btn btn-danger" id="reply_delete">delete</button>
-		<button type="button" class="btn btn-default" id="modal_close">close</button>
-      </div>
-    </div>
-  </div>
-</div>
-		
-</body>
-
 </html>
