@@ -73,7 +73,7 @@
 	</div>
 	
 	<!-- MODAL -->
-<div id="modifyModal" class="modal modal-primary fade"  role="dialog" data-backdrop="false">
+<div id="modifyModal" class="modal modal-primary fade"  role="dialog" >
   <div class="modal-dialog" >
     <div class="modal-content">
       <div class="modal-header">
@@ -241,6 +241,7 @@
 			})
 			
 		})
+		
 		
 		//모달을 닫습니다.
 		$("#modal_close").on('click',function(){

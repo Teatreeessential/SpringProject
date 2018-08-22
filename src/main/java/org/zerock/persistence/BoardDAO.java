@@ -26,5 +26,7 @@ public interface BoardDAO {
 	
 	public int listSearchCount(SearchCriteria cri)throws Exception;
 	
+	public void updateReplyCnt(int bno,int amount)throws Exception;
+	
 	
 }

@@ -75,9 +75,9 @@
   	
   	<select id="listPage" resultType="BoardVO">
   		<![CDATA[
-  		select b.bno,b.title,b.content,b.writer,b.regdate,b.viewcnt
+  		select b.bno,b.title,b.content,b.writer,b.regdate,b.viewcnt,b.replycnt
   		from 
-	  		(select rownum as rnum,a.bno,a.title,a.content,a.writer,a.regdate,a.viewcnt
+	  		(select rownum as rnum,a.bno,a.title,a.content,a.writer,a.regdate,a.viewcnt,a.replycnt
 		  		from (
 		  			select *
 		  			from tbl_board
@@ -90,9 +90,9 @@
   	
   	<select id="listSearch" resultType="BoardVO">
   	<![CDATA[
-  		select b.bno,b.title,b.content,b.writer,b.regdate,b.viewcnt
+  		select b.bno,b.title,b.content,b.writer,b.regdate,b.viewcnt,b.replycnt
   		from 
-	  		(select rownum as rnum,a.bno,a.title,a.content,a.writer,a.regdate,a.viewcnt
+	  		(select rownum as rnum,a.bno,a.title,a.content,a.writer,a.regdate,a.viewcnt,a.replycnt
 		  		from (
 				  		select *
 				  		from tbl_board
@@ -115,5 +115,10 @@
   		]]>
   		<include refid="search"></include>
   	</select>
+  	
+  	<update id="updateReplyCnt">
+  		update tbl_board set replycnt = replycnt + #{amount}
+  		where bno = #{bno}
+  	</update>
 
   </mapper>

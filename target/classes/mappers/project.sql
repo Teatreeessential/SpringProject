@@ -158,5 +158,14 @@ insert into tbl_user(user_id,user_pw,user_name) values ('user02','user02','hulk'
 insert into tbl_user(user_id,user_pw,user_name) values ('user03','user03','thor');
 insert into tbl_user(user_id,user_pw,user_name) values ('user04','user04','quick silver');
 
+alter table tbl_board add column replycnt number default 0
 
+ALTER TABLE tbl_board ADD(replycnt number default 0);
+alter table tbl_board drop column replycnt
+
+
+select * from tbl_board
+where bno = 202;
+
+select null+1 from dual;
 

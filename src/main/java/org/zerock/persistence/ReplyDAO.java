@@ -12,4 +12,5 @@ public interface ReplyDAO {
 	public void delete(int rno)throws Exception;
 	public List<ReplyVO> page_reply_count(int bno, Criteria cri)throws Exception; 
 	public int all_reply_count(int bno)throws Exception;
+	public int getBno(int rno)throws Exception;
 }
